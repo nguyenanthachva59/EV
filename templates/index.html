@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EventManager Pro - Quản Lý Sự Kiện Chuyên Nghiệp</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <a href="#" class="logo">EventManager</a>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#" onclick="showSection('home')">Trang chủ</a></li>
+                <li><a href="#" onclick="showSection('events')">Sự kiện sắp tới</a></li>
+                <li><a href="#" onclick="showSection('dashboard')">Quản lý vé</a></li>
+            </ul>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main id="homeSection">
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Khám Phá Và Đặt Vé Sự Kiện Độc Quyền</h1>
+                <p>Trải nghiệm những sự kiện tuyệt vời nhất với EventManager Pro</p>
+                <a href="#events" class="cta-button" onclick="showSection('events')">Xem tất cả sự kiện</a>
+            </div>
+        </section>
+
+        <section class="events-section" id="events">
+            <div class="container">
+                <h2 class="section-title">Sự Kiện Nổi Bật</h2>
+                <div class="events-grid" id="eventsGrid">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <section class="registration-section" id="registrationSection">
+        <div class="container">
+            <div class="registration-container">
+                <div class="event-info" id="selectedEventInfo">
+                    <h3>Thông tin sự kiện</h3>
+                    <div id="eventDetails"></div>
+                </div>
+                <div class="registration-form">
+                    <h2>Điền thông tin của bạn</h2>
+                    <div class="success-message" id="successMessage">
+                        Đăng ký thành công! Vui lòng kiểm tra email.
+                    </div>
+                    <form id="registrationForm">
+                        <div class="form-group">
+                            <label for="fullName">Họ và tên *</label>
+                            <input type="text" id="fullName" name="fullName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Số điện thoại *</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tickets">Số lượng vé</label>
+                            <input type="number" id="tickets" name="tickets" min="1" value="1" required>
+                        </div>
+                        <button type="submit" class="cta-button" style="width: 100%;">Xác Nhận Đặt Vé</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="dashboard-section" id="dashboardSection">
+        <div class="container">
+            <div class="dashboard-header">
+                <h1>Bảng điều khiển: Quản lý vé</h1>
+                <input type="text" class="search-box" id="searchBox" placeholder="Tìm kiếm theo tên hoặc email...">
+            </div>
+            <div class="data-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tên Sự Kiện</th>
+                            <th>Họ Tên</th>
+                            <th>Email</th>
+                            <th>Số điện thoại</th>
+                            <th>Số lượng vé</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody id="registrationsTable">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Thông tin liên hệ</h3>
+                    <p>📧 thachneo59@gmail.com</p>
+                    <p>📞 +84 968 088 197</p>
+                    <p>📍 Số 2 Phạm Hùng, Nam Từ Liêm, Hà Nội   </p>
+                </div>
+                <div class="footer-section">
+                    <h3>Link nhanh</h3>
+                    <a href="#" onclick="showSection('home')">Trang chủ</a>
+                    <a href="#" onclick="showSection('events')">Sự kiện sắp tới</a>
+                    <a href="#" onclick="showSection('dashboard')">Quản lý vé</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Mạng xã hội</h3>
+                    <a href="https://www.facebook.com/ton.poro" target="_blank" rel="noopener noreferrer">Facebook</a>
+                    <a href="https://zalo.me/84968088197" target="_blank" rel="noopener noreferrer">Zalo</a>
+                    <a href="https://www.linkedin.com/in/th%E1%BA%A1ch-nguy%E1%BB%85n-an-62b7a5368/" target="_blank" rel="noopener noreferrer">Linked in </a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Event Manager Pro.</p>
+            </div>
+        </div>
+    </footer>
+    
+
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyD5cwtNLXKZ-IgWg3qfZJGAiJLAs7om4_c",
+    authDomain: "evticket-dae78.firebaseapp.com",
+    projectId: "evticket-dae78",
+    storageBucket: "evticket-dae78.appspot.com",
+    messagingSenderId: "341869841907",
+    appId: "1:341869841907:web:0a258120019c89c3239686",
+    measurementId: "G-M7YDKEK7VB"
+  };
+
+  // Khởi chạy Firebase và Firestore
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+</script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script>
+    (function(){
+        emailjs.init({
+        publicKey: "z3swuN36DBzEC_k-Z" 
+        });
+    })();
+    </script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
